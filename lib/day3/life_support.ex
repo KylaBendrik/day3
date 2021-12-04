@@ -29,27 +29,47 @@ defmodule Day3.LifeSupport do
   def find_oxygen(list_of_lists, answer) do
     if length(list_of_lists) == 1 do
       # decimalize answer, which should be a list
-      decimal_from_list_of_strings(answer)
+      [list_of_one] = list_of_lists
+      decimal_from_list_of_strings(answer ++ list_of_one)
     else
       # find most common
       most_common = find_most_common(list_of_lists, 1)
-      IO.puts("most_common: #{most_common}")
       # add good ones to next list_of_lists (with the first bit reomved)
       new_list_of_lists = filter_list(list_of_lists, most_common)
-      
-      find_oxygen(new_list_of_lists, answer ++ [most_common])
+      new_answer = answer ++ [most_common]
+      find_oxygen(new_list_of_lists, new_answer)
+    end
+  end
+  
+  def find_co2(list_of_lists), do: find_co2(list_of_lists, [])
+  
+  def find_co2(list_of_lists, answer) do
+    if length(list_of_lists) == 1 do
+      [list_of_one] = list_of_lists
+      # decimalize answer, which should be a list
+      decimal_from_list_of_strings(answer ++ list_of_one)
+    else
+      # find most common
+      most_common = find_most_common(list_of_lists, 1)
+      least_common = Day3.flipchar(most_common)
+      # add good ones to next list_of_lists (with the first bit reomved)
+      new_list_of_lists = filter_list(list_of_lists, least_common)
+      new_answer = answer ++ [least_common]
+      find_co2(new_list_of_lists, new_answer)
     end
   end
   
   def filter_list(list_of_lists, filter_by), do: filter_list(list_of_lists, filter_by, [])
   
-  def filter_list([], _filter_by, new_list), do: new_list
+  def filter_list([], _filter_by, new_list) do
+    new_list
+  end 
   
   def filter_list([first_entry | other_entries], filter_by, new_list) do
     [first_bit | other_bits] = first_entry
     
     cond do
-      first_bit == filter_by -> filter_list(other_entries, filter_by, new_list ++ other_bits)
+      first_bit == filter_by -> filter_list(other_entries, filter_by, new_list ++ [other_bits])
       true -> filter_list(other_entries, filter_by, new_list)
     end
   end
@@ -59,7 +79,6 @@ defmodule Day3.LifeSupport do
   
   # All done, send back the answer
   def find_most_common([], favorite, %{ones: ones, zeros: zeros}) do
-    IO.inspect(%{ones: ones, zeros: zeros})
     cond do
       ones > zeros -> "1"
       zeros > ones -> "0"

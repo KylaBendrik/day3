@@ -53,4 +53,16 @@ defmodule Day3.LifeSupportTest do
     list_of_lists = Day3.LifeSupport.list_from_file("lib/input/example data.txt")
     assert Day3.LifeSupport.find_oxygen(list_of_lists) == 23
   end
+  
+  test "find co2 of example" do
+    list_of_lists = Day3.LifeSupport.list_from_file("lib/input/example data.txt")
+    assert Day3.LifeSupport.find_co2(list_of_lists) == 10
+  end
+  
+  test "run lifesupport with real data" do
+    list_of_lists = Day3.LifeSupport.list_from_file("lib/input/input.txt")
+    IO.puts("Oxygen: #{Day3.LifeSupport.find_oxygen(list_of_lists)}")
+    IO.puts("CO2: #{Day3.LifeSupport.find_co2(list_of_lists)}")
+    
+  end
 end

@@ -70,7 +70,7 @@ defmodule Day3 do
     |> Enum.join("")
   end
   
-  defp flipchar(char) do
+  def flipchar(char) do
     case char do
       "0" -> "1"
       "1" -> "0"
